@@ -24,6 +24,8 @@ def random_output():
     for i in range(10):
         tag = {
             "name" : str(uuid.uuid4())[0:5],
+            "title": str(uuid.uuid4())[5:18],
+            "uri"  : "http://www.example.com/{}".format(uuid.uuid4()),
             "num"  : random.randint(1, 100)
         }
         tags.append(tag)
