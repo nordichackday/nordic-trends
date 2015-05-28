@@ -5,8 +5,10 @@ import json
 import re
 import random
 import uuid
+from flask.ext.cors import CORS
 
 app = Flask(__name__)
+cors = CORS(app)
 
 @app.route('/')
 def index():
