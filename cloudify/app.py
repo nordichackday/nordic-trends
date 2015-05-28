@@ -15,9 +15,21 @@ def index():
 @app.route('/tags')
 def tags():
     tags = random_output()
+    tags = gen_rel_float_value(tags)
     data = { "tags": tags }
 
     return jsonify(data)
+
+def gen_rel_float_value(tags):
+    maxval = 0
+    for tag in tags:
+        if tag['num'] > maxval:
+            maxval = tag['num']
+    out = []
+    for tag in tags:
+        tag['relnum'] = float(tag['num']) / maxval
+        out.append(tag)
+    return out
 
 def random_output():
     tags = []
