@@ -20,10 +20,18 @@ ORIGINS = ("Yle (sv)", "Yle (fi)", "SVT", "NRK", "DR", "RUV")
 
 @app.route('/')
 def index():
-    return 'Index'
+    data = ""
+    out = []
+    jsn = load_source_data()
+
+    for feed in jsn:
+        for article in feed['articles']:
+            out = taggify_words(out, article['description'])
+
+    return out
 
 
-@app.route('/tags')
+@app.route('/random')
 def tags():
     tags = random_output()
     tags = gen_rel_float_value(tags)
@@ -42,6 +50,16 @@ def gen_rel_float_value(tags):
         tag['relnum'] = float(tag['num']) / maxval
         out.append(tag)
     return out
+
+
+def taggify_words(lst, words):
+    return lst
+
+
+def load_source_data():
+    station_url = "http://192.168.1.53:8080/articles"
+    jd = urllib2.urlopen(station_url).read()
+    return json.loads(jd)
 
 
 def random_output():
