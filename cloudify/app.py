@@ -15,6 +15,8 @@ from flask.ext.cors import CORS
 app = Flask(__name__)
 cors = CORS(app)
 
+ORIGINS = ("YLE (sv)", "YLE (fi)", "SVT")
+
 
 @app.route('/')
 def index():
@@ -49,7 +51,8 @@ def random_output():
             "name" : str(uuid.uuid4())[0:5],
             "title": str(uuid.uuid4())[5:18],
             "uri"  : "http://www.example.com/{}".format(uuid.uuid4()),
-            "num"  : random.randint(1, 100)
+            "num"  : random.randint(1, 100),
+            "origin": ORIGINS[random.randint(0,2)]
         }
         tags.append(tag)
     return tags
