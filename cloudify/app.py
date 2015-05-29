@@ -52,7 +52,7 @@ def tags(num_items):
     return jsonify(out)
 
 @app.route('/random')
-def random():
+def random_endpoint():
     tags = random_output()
     tags = gen_rel_float_value(tags)
     data = { "tags": tags }
@@ -94,8 +94,15 @@ def random_output():
     for i in range(30):
         tag = {
             "name" : str(uuid.uuid4())[0:5],
-            "title": str(uuid.uuid4())[5:18],
-            "uri"  : "http://www.example.com/{}".format(uuid.uuid4()),
+            "sources": [
+                {
+                    "title": str(uuid.uuid4())[5:18] + str(1),
+                    "uri": "http://www.example.com/{}".format(uuid.uuid4())
+                },{
+                    "title": str(uuid.uuid4())[5:18] + str(2),
+                    "uri": "http://www.example.com/{}".format(uuid.uuid4())
+                },
+            ],
             "num"  : random.randint(1, 10),
             "origin": ORIGINS[random.randint(0, len(ORIGINS) - 1)]
         }
