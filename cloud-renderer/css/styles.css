@@ -1,9 +1,19 @@
+body {
+	border-top:40px solid #34c1c2;
+	border-bottom: 40px solid #34c1c2;
+}
+
+a:link {
+	color: #34c1c2;
+}
+
 .taglist li {
 
 }
 
 h1 {
 	font-size: 100px;
+	text-shadow: 1px 2px 0 #dedede;
 }
 .weight {
 	border-radius: 4px;
