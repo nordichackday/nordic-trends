@@ -1,9 +1,13 @@
 package se.nordichackday.nordictrends;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Article {
-    private final String title;
-    private final String description;
-    private final String url;
+    public String title;
+    public String description;
+    public String url;
+    public String articleText;
 
     public Article(String title, String description, String url) {
         this.title = title;
@@ -11,15 +15,4 @@ public class Article {
         this.url = url;
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public String getUrl() {
-        return url;
-    }
 }

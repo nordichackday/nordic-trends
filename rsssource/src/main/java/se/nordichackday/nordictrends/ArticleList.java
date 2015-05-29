@@ -7,11 +7,13 @@ import java.util.List;
  */
 public class ArticleList {
     private final String source;
+    private final String company;
     private final List<Article> articles;
 
-    public ArticleList(List<Article> articles, String source) {
+    public ArticleList(List<Article> articles, ArticleController.Company company) {
         this.articles = articles;
-        this.source = source;
+        this.company = company.name;
+        this.source = company.url;
     }
 
     public List<Article> getArticles() {
@@ -23,4 +25,7 @@ public class ArticleList {
     }
 
 
+    public String getCompany() {
+        return company;
+    }
 }
