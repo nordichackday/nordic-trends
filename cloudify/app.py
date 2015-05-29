@@ -1,3 +1,8 @@
+"""
+Cloudify the Nordic trends.
+
+Like a boss.
+"""
 from flask import Flask, jsonify, request
 from datetime import datetime
 import urllib2
@@ -10,9 +15,13 @@ from flask.ext.cors import CORS
 app = Flask(__name__)
 cors = CORS(app)
 
+ORIGINS = ("YLE (sv)", "YLE (fi)", "SVT")
+
+
 @app.route('/')
 def index():
     return 'Index'
+
 
 @app.route('/tags')
 def tags():
@@ -21,6 +30,7 @@ def tags():
     data = { "tags": tags }
 
     return jsonify(data)
+
 
 def gen_rel_float_value(tags):
     maxval = 0
@@ -33,6 +43,7 @@ def gen_rel_float_value(tags):
         out.append(tag)
     return out
 
+
 def random_output():
     tags = []
     for i in range(10):
@@ -40,10 +51,12 @@ def random_output():
             "name" : str(uuid.uuid4())[0:5],
             "title": str(uuid.uuid4())[5:18],
             "uri"  : "http://www.example.com/{}".format(uuid.uuid4()),
-            "num"  : random.randint(1, 100)
+            "num"  : random.randint(1, 100),
+            "origin": ORIGINS[random.randint(0,2)]
         }
         tags.append(tag)
     return tags
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0',debug=True)
