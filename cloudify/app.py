@@ -15,7 +15,7 @@ from flask.ext.cors import CORS
 app = Flask(__name__)
 cors = CORS(app)
 
-ORIGINS = ("YLE (sv)", "YLE (fi)", "SVT")
+ORIGINS = ("Yle (sv)", "Yle (fi)", "SVT", "NRK", "DR", "RUV")
 
 
 @app.route('/')
@@ -46,13 +46,13 @@ def gen_rel_float_value(tags):
 
 def random_output():
     tags = []
-    for i in range(10):
+    for i in range(30):
         tag = {
             "name" : str(uuid.uuid4())[0:5],
             "title": str(uuid.uuid4())[5:18],
             "uri"  : "http://www.example.com/{}".format(uuid.uuid4()),
-            "num"  : random.randint(1, 100),
-            "origin": ORIGINS[random.randint(0,2)]
+            "num"  : random.randint(1, 10),
+            "origin": ORIGINS[random.randint(0, len(ORIGINS) - 1)]
         }
         tags.append(tag)
     return tags
