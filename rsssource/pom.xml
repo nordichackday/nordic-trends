@@ -26,11 +26,6 @@
             <artifactId>rome</artifactId>
             <version>1.0</version>
         </dependency>
-        <dependency>
-            <groupId>com.jaunt.code</groupId>
-            <artifactId>jaunt</artifactId>
-            <version>0.9.9.9</version>
-        </dependency>
     </dependencies>
 
     <properties>

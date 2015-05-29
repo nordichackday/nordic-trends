@@ -1,7 +1,5 @@
 package se.nordichackday.nordictrends;
 
-import com.jaunt.NotFound;
-import com.jaunt.ResponseException;
 import com.sun.syndication.feed.synd.SyndEntryImpl;
 import com.sun.syndication.feed.synd.SyndFeed;
 import com.sun.syndication.io.FeedException;
@@ -75,19 +73,7 @@ public class ArticleController {
     private Article cleanArticle(SyndEntryImpl sf, boolean withArticleText) {
         String cleanDescription = TextCleaner.clean(sf.getDescription().getValue());
         Article article = new Article(sf.getTitle(), cleanDescription, sf.getLink());
-
-        if(withArticleText) {
-            try {
-                article.articleText = ArticleScraper.getCleanArticle(sf.getLink(), cleanDescription);
-            } catch (ResponseException e) {
-                System.out.println("Kunde inte läsa ut artikeltext: " + sf.getLink());
-            } catch (NotFound notFound) {
-                System.out.println("Kunde inte hitta elementet i DOMen");
-            }
-        }
         return article;
     }
-
-
 
 }
