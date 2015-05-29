@@ -1,5 +1,7 @@
 package se.nordichackday.nordictrends;
 
+import com.jaunt.NotFound;
+import com.jaunt.ResponseException;
 import com.sun.syndication.feed.synd.SyndEntryImpl;
 import com.sun.syndication.feed.synd.SyndFeed;
 import com.sun.syndication.io.FeedException;
@@ -13,47 +15,53 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicLong;
 
 @RestController
 public class ArticleController {
 
-    private static final String template = "Hello, %s!";
-    private final AtomicLong counter = new AtomicLong();
+    public enum Company{
+        SVT ("SVT", "http://www.svt.se/nyheter/rss.xml"),
+        YLE_FINNISH ("Yle (fi)", "http://yle.fi/uutiset/rss/uutiset.rss"),
+        YLE_SWEDISH ("Yle (sv)", "http://svenska.yle.fi/nyheter/senaste-nytt.rss"),
+        NRK ("NRK","http://www.nrk.no/nyheter/siste.rss"),
+        RUV ("RUV", "http://www.ruv.is/rss/innlent"),
+        DR ("DR", "http://www.dr.dk/nyheder/service/feeds/allenyheder");
 
-    private static String SVT = "http://www.svt.se/nyheter/rss.xml";
-    private static String YLE_FINNISH = "http://yle.fi/uutiset/rss/uutiset.rss";
-    private static String YLE_SWEDISH = "http://svenska.yle.fi/nyheter/senaste-nytt.rss";
-    private static String NRK = "http://www.nrk.no/nyheter/siste.rss";
-    private static String RUV = "http://www.ruv.is/rss/innlent";
-    private static String DR = "http://www.dr.dk/nyheder/service/feeds/allenyheder";
+        public final String name;
+        public final String url;
+
+        Company(String name, String url) {
+            this.name = name;
+            this.url = url;
+        }
+    }
 
     @RequestMapping("/articles")
-    public List<ArticleList> greeting(@RequestParam(value="name", defaultValue="World") String name) {
+    public List<ArticleList> greeting(@RequestParam(value="addArticleText", defaultValue = "false") boolean withArticleText) {
 
         List<ArticleList> result = new ArrayList<>();
 
-        result.add(getArticleList(SVT));
-        result.add(getArticleList(YLE_FINNISH));
-        result.add(getArticleList(YLE_SWEDISH));
-        result.add(getArticleList(NRK));
-        result.add(getArticleList(RUV));
-        result.add(getArticleList(DR));
+        result.add(getArticleList(Company.SVT, withArticleText));
+        result.add(getArticleList(Company.YLE_FINNISH, withArticleText));
+        result.add(getArticleList(Company.YLE_SWEDISH, withArticleText));
+        result.add(getArticleList(Company.NRK, withArticleText));
+        result.add(getArticleList(Company.RUV, withArticleText));
+        result.add(getArticleList(Company.DR, withArticleText));
 
         return result;
 
     }
 
-    private ArticleList getArticleList(String rssUrl) {
+    private ArticleList getArticleList(Company company, boolean withArticleText) {
 
         List<Article> articles = new ArrayList<>();
         try {
             SyndFeedInput input = new SyndFeedInput();
-            SyndFeed feed = input.build(new XmlReader(new URL(rssUrl)));
+            SyndFeed feed = input.build(new XmlReader(new URL(company.url)));
 
             for(Object entry: feed.getEntries()) {
                 SyndEntryImpl sf = (SyndEntryImpl) entry;
-                articles.add(cleanArticle(sf));
+                articles.add(cleanArticle(sf, withArticleText));
             }
 
         } catch (FeedException e) {
@@ -61,21 +69,25 @@ public class ArticleController {
         } catch (IOException e) {
             System.out.println("Något gick fel: " + e.getMessage());
         }
-        return new ArticleList(articles, rssUrl);
+        return new ArticleList(articles, company);
     }
 
-    private Article cleanArticle(SyndEntryImpl sf) {
-        String cleanDescription = clean(sf.getDescription().getValue());
-        String articleText = getArticleText(sf.getLink());
-        return new Article(sf.getTitle(), cleanDescription, sf.getLink());
+    private Article cleanArticle(SyndEntryImpl sf, boolean withArticleText) {
+        String cleanDescription = TextCleaner.clean(sf.getDescription().getValue());
+        Article article = new Article(sf.getTitle(), cleanDescription, sf.getLink());
+
+        if(withArticleText) {
+            try {
+                article.articleText = ArticleScraper.getCleanArticle(sf.getLink(), cleanDescription);
+            } catch (ResponseException e) {
+                System.out.println("Kunde inte läsa ut artikeltext: " + sf.getLink());
+            } catch (NotFound notFound) {
+                System.out.println("Kunde inte hitta elementet i DOMen");
+            }
+        }
+        return article;
     }
 
-    private String getArticleText(String link) {
-        return link;
-    }
 
-    private String clean(String text) {
-        return text.replaceAll("\\<[^>]*\\>", "");
-    }
 
 }
