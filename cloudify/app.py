@@ -40,13 +40,23 @@ def tags(num_items):
             # Add titles and links
             for tag, num in tags.iteritems():
                 if num < int(num_items): continue
-                out['tags'].append({
-                    "name" : tag,
-                    "num": num,
-                    "origin": feed['source'],
-                    "title": article['title'],
-                    "uri": article['url']
-                    })
+                found = False
+
+                # Search for existing tags
+                for s in out['tags']:
+                    if s['name'] == tag:
+                        found = True
+
+                if not found:
+                    out['tags'].append({
+                        "name" : tag,
+                        "num": num,
+                        "origin": feed['source'],
+                        "sources" : [{
+                            "title": article['title'],
+                            "uri": article['url']
+                        }]
+                        })
 
     out['tags'] = gen_rel_float_value(out['tags'])
     return jsonify(out)
