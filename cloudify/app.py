@@ -19,7 +19,14 @@ from flask.ext.cors import CORS
 app = Flask(__name__)
 cors = CORS(app)
 
-ORIGINS = ("Yle (sv)", "Yle (fi)", "SVT", "NRK", "DR", "RUV")
+ORIGINS = (
+    "http://svenska.yle.fi/nyheter/senaste-nytt.rss",
+    "http://yle.fi/uutiset/rss/uutiset.rss",
+    "http://www.svt.se/nyheter/rss.xml",
+    "http://www.nrk.no/nyheter/siste.rss",
+    "http://www.dr.dk/nyheder/service/feeds/allenyheder",
+    "http://www.ruv.is/rss/innlent"
+)
 
 
 @app.route('/')
