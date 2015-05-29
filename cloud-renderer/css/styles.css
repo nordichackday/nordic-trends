@@ -1,49 +1,43 @@
 .taglist li {
 
 }
-.weight a{
-	padding-right: 10px;
-	border-right: 8px solid;
 
+h1 {
+	font-size: 100px;
 }
-.weight-1 a{
-	border-color: rgba(64,30,12,0.1);
-	border-width: 10px;
-
+.weight {
+	border-radius: 4px;
+	padding: 2px 3px;
+	font-size: 8px;
+	color: #fff;
 }
-.weight-2 a{
-	border-color: rgba(64,30,12,0.2);
-	border-width: 20px;
+.weight-1 {
+	background-color: rgba(64,30,12,0.1);
 }
-.weight-3 a{
-	border-color: rgba(64,30,12,0.3);
-	border-width: 30px;
+.weight-2 {
+	background-color: rgba(64,30,12,0.2);
 }
-.weight-4 a{
-	border-color: rgba(64,30,12,0.4);
-	border-width: 40px;
+.weight-3 {
+	background-color: rgba(64,30,12,0.3);
 }
-.weight-5 a{
-	border-color: rgba(64,30,12,0.5);
-	border-width: 50px;
+.weight-4 {
+	background-color: rgba(64,30,12,0.4);
 }
-.weight-6 a{
-	border-color: rgba(64,30,12,0.6);
-	border-width: 60px;
+.weight-5 {
+	background-color: rgba(64,30,12,0.5);
 }
-.weight-7 a{
-	border-color: rgba(64,30,12,0.7);
-	border-width: 70px;
+.weight-6 {
+	background-color: rgba(64,30,12,0.6);
 }
-.weight-8 a{
-	border-color: rgba(64,30,12,0.8);
-	border-width: 80px;
+.weight-7 {
+	background-color: rgba(64,30,12,0.7);
 }
-.weight-9 a{
-	border-color: rgba(64,30,12,0.9);
-	border-width: 90px;
+.weight-8 {
+	background-color: rgba(64,30,12,0.8);
 }
-.weight-10 a{
-	border-color: rgba(64,30,12,1.0);
-	border-width: 100px;
+.weight-9 {
+	background-color: rgba(64,30,12,0.9);
+}
+.weight-10 {
+	background-color: rgba(64,30,12,1.0);
 }
